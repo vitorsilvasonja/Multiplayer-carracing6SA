@@ -78,7 +78,7 @@ class Game {
 
   play() {
     this.handleElements();
-
+    this.handleResetButton();
     Player.getPlayersInfo();
 
     if (allPlayers !== undefined) {
@@ -104,10 +104,11 @@ class Game {
           ellipse(x, y, 60, 60);
 
           this.handleFuel(index);
+          
           this.handlePowerCoins(index);
           
           // Altere a posição da câmera na direção y
-          camera.position.x = cars[index - 1].position.x;
+          //camera.position.x = cars[index - 1].position.x;
           camera.position.y = cars[index - 1].position.y;
 
         }
@@ -118,7 +119,7 @@ class Game {
         player.positionY += 10;
         player.update();
       }
-
+      this.handlePlayerControls()
       drawSprites();
     }
   }
@@ -146,14 +147,36 @@ class Game {
 
 handleResetButton() {
   this.resetButton.mousePressed(() => {
+    database.ref("/").set({
+      gameState:0,
+      playerCount:0,
+      players:{},
+      carsAtEnd:0,
+    })
+
    //defina o valor inicial para os jogadores e gamecount.
+ window.location.reload()
   });
+
 }
 handlePlayerControls() {
   if (keyIsDown(UP_ARROW)) {
     player.positionY += 10;
     player.update();
+   
   }
+  if (keyIsDown(RIGHT_ARROW)) {
+    player.positionX += 10;
+    player.update();
+   
+  }
+  if (keyIsDown(LEFT_ARROW)) {
+    player.positionX -= 10;
+    player.update();
+   
+  }
+ 
+
 
  //preencher com keydown para esquerda e direita
 }
